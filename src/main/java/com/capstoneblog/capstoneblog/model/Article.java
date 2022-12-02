@@ -1,17 +1,28 @@
 package com.capstoneblog.capstoneblog.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Article {
 
     private int articleID;
+    private String articleTitle;
     private String articleContent;
     // 0 = not displayed, 1 = displayed
     private int articleDisplay;
     private LocalDateTime timeCreated;
     private LocalDateTime timeUpdated;
     private LocalDateTime timeExpires;
+    private List<Tag> tagsOnArticle;
+
+    public List<Tag> getTagsOnArticle() {
+        return tagsOnArticle;
+    }
+
+    public void setTagsOnArticle(List<Tag> tagsOnArticle) {
+        this.tagsOnArticle = tagsOnArticle;
+    }
 
     public int getArticleID() {
         return articleID;
@@ -19,6 +30,14 @@ public class Article {
 
     public void setArticleID(int articleID) {
         this.articleID = articleID;
+    }
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
     }
 
     public String getArticleContent() {

@@ -1,4 +1,4 @@
 package com.capstoneblog.capstoneblog.dao;
 
-public class UserDaoImpl {
+public class UserDaoDB {
 }
