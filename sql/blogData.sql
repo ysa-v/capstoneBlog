@@ -11,7 +11,7 @@ INSERT INTO tag(hashtag) VALUES
     ('summer'),
     ('sun');
 
-INSERT INTO blogger(bloggerName, bloggerPassword, bloggerRole) VALUES
+INSERT INTO user(userName, userPassword, userRole) VALUES
     ('Test Admin', 'SuperSecret123', 1),
     ('Test worker', 'ExtraSecure', 2),
     ('Test Guest', 'password', 0);
