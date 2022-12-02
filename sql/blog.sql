@@ -26,15 +26,15 @@ CREATE TABLE tag(
 );
 
 
-DROP TABLE IF EXISTS blogger;
-CREATE TABLE blogger(
-    bloggerID INT AUTO_INCREMENT,
-    bloggerName VARCHAR (20) NOT NULL,
-    bloggerPassword VARCHAR (20) NOT NULL,
-    bloggerRole INT NOT NULL,
-    CONSTRAINT pk_blogger
-        PRIMARY KEY (bloggerID)
-); 
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+    userID INT AUTO_INCREMENT,
+    userName VARCHAR (20) NOT NULL,
+    userPassword VARCHAR (20) NOT NULL,
+    userRole INT NOT NULL,
+    CONSTRAINT pk_user
+        PRIMARY KEY (userID)
+);
 
 
 DROP TABLE IF EXISTS article_tag;
