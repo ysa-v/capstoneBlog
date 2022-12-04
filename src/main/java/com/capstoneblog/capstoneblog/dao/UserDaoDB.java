@@ -82,7 +82,7 @@ public class UserDaoDB implements UserDao{
                 user.getUserPassword(),
                 user.getUserRole());
 
-            int newID = jdbc.queryForObject("SELECT_LAST_INSERT_ID()", Integer.class);
+            int newID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
             user.setUserID(newID);
             return user;
         } catch (DataAccessException ex){
