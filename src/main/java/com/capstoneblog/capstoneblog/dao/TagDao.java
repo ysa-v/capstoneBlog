@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface TagDao {
 
-    public Tag getTagByID(int ID);
-    public List<Tag> getAllTags();
-    public Tag addTag(Tag tag);
-    public void updateTag(Tag tag);
-    public void deleteTagByID(int ID);
-    public List<Article> getArticlesForTag(Tag tag);
+    Tag getTagByID(int ID);
+    List<Tag> getAllTags();
+    Tag addTag(Tag tag);
+    void updateTag(Tag tag);
+    void deleteTagByID(int ID);
+    List<Article> getArticlesForTag(Tag tag);
+    void addArticleToTag(Tag tag);
 }

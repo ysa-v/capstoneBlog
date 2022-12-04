@@ -7,11 +7,13 @@ import java.util.List;
 
 public interface ArticleDao {
 
-    public Article getArticleByID(int ID);
-    public List<Article> getAllArticles();
-    public Article addArticle(Article article);
-    public void updateArticle(Article article);
-    public void deleteArticleByID(int ID);
-    public List<Tag> getTagsForArticle(Article article);
+    Article getArticleByID(int ID);
+    List<Article> getAllArticles();
+    Article addArticle(Article article);
+    void updateArticle(Article article);
+    void deleteArticleByID(int ID);
+    List<Tag> getTagsForArticle(Article article);
+
+    void addTagToArticle(Article article);
 
 }
