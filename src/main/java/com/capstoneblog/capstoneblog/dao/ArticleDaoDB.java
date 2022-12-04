@@ -68,4 +68,9 @@ public class ArticleDaoDB implements ArticleDao{
     public List<Tag> getTagsForArticle(Article article) {
         return null;
     }
+
+    @Override
+    public void addTagToArticle(Article article) {
+
+    }
 }

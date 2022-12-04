@@ -35,4 +35,9 @@ public class TagDaoDB implements TagDao{
     public List<Article> getArticlesForTag(Tag tag) {
         return null;
     }
+
+    @Override
+    public void addArticleToTag(Tag tag) {
+
+    }
 }
