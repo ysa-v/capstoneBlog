@@ -14,6 +14,6 @@ public interface ArticleDao {
     void deleteArticleByID(int ID);
     List<Tag> getTagsForArticle(Article article);
 
-    void addTagToArticle(Article article);
+    void addTagsToArticles(List<Article> articles);
 
 }

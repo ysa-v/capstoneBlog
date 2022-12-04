@@ -13,5 +13,6 @@ public interface TagDao {
     void updateTag(Tag tag);
     void deleteTagByID(int ID);
     List<Article> getArticlesForTag(Tag tag);
-    void addArticleToTag(Tag tag);
+
+
 }
