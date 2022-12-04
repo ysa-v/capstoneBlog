@@ -62,7 +62,19 @@ public class ArticleDaoDB implements ArticleDao{
 
     @Override
     public Article addArticle(Article article) {
-        return null;
+        article.setTimeCreated(LocalDateTime.now());
+        final String INSERT_ARTICLE = "INSERT INTO article(articleTitle =?, articleContent =?, articleCreateDate =? " +
+                "articleIsApproved =?, articleUpdateDate =?, articleExpire =? VALUES (?, ?, ?, ?, ?)";
+        jdbc.update(INSERT_ARTICLE,
+                article.getArticleTitle(),
+                article.getArticleContent(),
+                article.getTimeCreated(),
+                article.getArticleDisplay(),
+                article.getTimeUpdated(),
+                article.getTimeExpires());
+        int newID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        article.setArticleID(newID);
+        return article;
     }
 
     @Override
