@@ -53,9 +53,9 @@ public class ArticleDaoDB implements ArticleDao{
     @Override
     public Article getArticleByID(int ID) {
         try {
-            final String GET_ARTICLE_BY_IO = "SELECT * FROM article WHERE articleID = ?";
-            Article article = jdbc.queryForObject(GET_ARTICLE_BY_IO, new ArticleMapper(), ID);
-//            article.setTagsOnArticle(getTagsForArticle(article));
+            final String GET_ARTICLE_BY_ID = "SELECT * FROM article WHERE articleID = ?";
+            Article article = jdbc.queryForObject(GET_ARTICLE_BY_ID, new ArticleMapper(), ID);
+            article.setTagsOnArticle(getTagsForArticle(article));
             return article;}
         catch (DataAccessException e)
             {System.out.println("Data access issue");
@@ -75,10 +75,10 @@ public class ArticleDaoDB implements ArticleDao{
     }
 
     @Override
+    @Transactional
     public Article addArticle(Article article) {
         article.setTimeCreated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
         article.setTimeUpdated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
-//        article.setTimeExpires(LocalDateTime.now());
         final String INSERT_ARTICLE = "INSERT INTO article(articleTitle, articleContent, articleCreateDate, " +
                 "articleIsApproved, articleUpdateDate, articleExpire) VALUES (?, ?, ?, ?, ?, ?)";
         jdbc.update(INSERT_ARTICLE,
@@ -96,8 +96,8 @@ public class ArticleDaoDB implements ArticleDao{
     @Override
     public void updateArticle(Article article) {
         article.setTimeUpdated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
-        final String UPDATE_ARTICLE = "UPDATE article SET articleTitle =?, articleContent =?, articleCreateDate =? " +
-                "articleIsApproved=? articleUpdateDate =?,articleExpire = ? WHERE articleID =?";
+        final String UPDATE_ARTICLE = "UPDATE article SET articleTitle = ?, articleContent = ?, articleCreateDate = ?, " +
+                "articleIsApproved = ?, articleUpdateDate = ?, articleExpire = ? WHERE articleID = ?";
         jdbc.update(UPDATE_ARTICLE,
                 article.getArticleTitle(),
                 article.getArticleContent(),
@@ -106,24 +106,26 @@ public class ArticleDaoDB implements ArticleDao{
                 article.getTimeUpdated(),
                 article.getTimeExpires(),
                 article.getArticleID());
-
     }
 
     @Override
     @Transactional
     public void deleteArticleByID(int id) {
-        final String DELETE_FROM_ARTICLE_TAGS = "DELETE * FROM article_tag WHERE articleID = ?";
+        final String DELETE_FROM_ARTICLE_TAGS = "DELETE at.* FROM article_tag at WHERE articleID = ?";
         jdbc.update(DELETE_FROM_ARTICLE_TAGS, id);
-        final String DELETE_FROM_ARTICLE = "DELETE * FROM article WHERE articleID =?";
+        final String DELETE_FROM_ARTICLE = "DELETE a.* FROM article a WHERE articleID = ?";
         jdbc.update(DELETE_FROM_ARTICLE, id);
-
     }
 
     @Override
     public List<Tag> getTagsForArticle(Article article) {
-        final String SELECT_TAGS_FOR_ARTICLE = "SELECT t* FROM tag t " +
-                "JOIN article_tag at on t.articleID = at.articleID WHERE at.articleID =?";
-        return jdbc.query(SELECT_TAGS_FOR_ARTICLE, new TagDaoDB.TagMapper(), article.getArticleID());
+        try {
+            final String SELECT_TAGS_FOR_ARTICLE = "SELECT * FROM tag " +
+                    "JOIN article_tag ON tag.articleID = article_tag.articleID WHERE article_tag.articleID = ?";
+            return jdbc.query(SELECT_TAGS_FOR_ARTICLE, new TagDaoDB.TagMapper(), article.getArticleID());
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -131,7 +133,5 @@ public class ArticleDaoDB implements ArticleDao{
         for(Article article : articles){
             article.setTagsOnArticle(getTagsForArticle(article));
         }
-
     }
-
 }

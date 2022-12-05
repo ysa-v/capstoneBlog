@@ -23,6 +23,7 @@ public class TagDaoDB implements TagDao{
         @Override
         public Tag mapRow(ResultSet rs, int index) throws SQLException{
             Tag tag = new Tag();
+            tag.setTagID(rs.getInt("tagID"));
             tag.setTagName(rs.getString("hashtag"));
             return tag;
         }
@@ -92,7 +93,8 @@ public class TagDaoDB implements TagDao{
 
     private void insertArticleTagTable(Tag tag){
         final String INSERT_ARTICLE_TAG = "INSERT INTO article_tag(articleID, tagID) VALUES (?,?)";
-        for(Article article: tag.getArticlesWithTag()){
+        List<Article> articles = tag.getArticlesWithTag();
+        for(Article article: articles){
             jdbc.update(INSERT_ARTICLE_TAG, tag.getTagID(), article.getArticleID());
         }
     }

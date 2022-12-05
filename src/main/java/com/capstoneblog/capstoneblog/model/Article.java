@@ -1,5 +1,7 @@
 package com.capstoneblog.capstoneblog.model;
 
+import jakarta.annotation.Nullable;
+
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -16,14 +18,6 @@ public class Article {
     private ZonedDateTime timeUpdated;
     private ZonedDateTime timeExpires;
     private List<Tag> tagsOnArticle;
-
-    public List<Tag> getTagsOnArticle() {
-        return tagsOnArticle;
-    }
-
-    public void setTagsOnArticle(List<Tag> tagsOnArticle) {
-        this.tagsOnArticle = tagsOnArticle;
-    }
 
     public int getArticleID() {
         return articleID;
@@ -79,6 +73,14 @@ public class Article {
 
     public void setTimeExpires(ZonedDateTime timeExpires) {
         this.timeExpires = timeExpires;
+    }
+
+    public void setTagsOnArticle(List<Tag> tagsOnArticle) {
+        this.tagsOnArticle = tagsOnArticle;
+    }
+
+    public List<Tag> getTagsOnArticle() {
+        return tagsOnArticle;
     }
 
     @Override
