@@ -54,7 +54,7 @@ public class UserDaoDB implements UserDao{
     @Override
     public void deleteUserById(int id) {
         try{
-            final String DELETE_USER_BY_ID = "DELETE * FROM user WHERE userID = ?";
+            final String DELETE_USER_BY_ID = "DELETE FROM user WHERE userID = ?";
             jdbc.update(DELETE_USER_BY_ID, id);
         } catch (DataAccessException ignored){
 
