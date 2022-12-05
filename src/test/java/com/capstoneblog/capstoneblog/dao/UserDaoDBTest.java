@@ -1,11 +1,13 @@
 package com.capstoneblog.capstoneblog.dao;
 
+
 import com.capstoneblog.capstoneblog.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +35,7 @@ class UserDaoDBTest {
         User fromDao = userDao.getUserByID(user.getUserID());
 
         assertEquals(user, fromDao);
+
     }
 
     @Test
@@ -54,10 +57,12 @@ class UserDaoDBTest {
         assertEquals(2,users.size());
         assertTrue(users.contains(user));
         assertTrue(users.contains(user2));
+
     }
 
     @Test
     void deleteUserById() {
+
         User user = new User();
         user.setUserName("Test User");
         user.setUserPassword("Test Password");

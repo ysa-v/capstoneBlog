@@ -1,6 +1,7 @@
 package com.capstoneblog.capstoneblog.model;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,9 +12,9 @@ public class Article {
     private String articleContent;
     // 0 = not displayed, 1 = displayed
     private int articleDisplay;
-    private LocalDateTime timeCreated;
-    private LocalDateTime timeUpdated;
-    private LocalDateTime timeExpires;
+    private ZonedDateTime timeCreated;
+    private ZonedDateTime timeUpdated;
+    private ZonedDateTime timeExpires;
     private List<Tag> tagsOnArticle;
 
     public List<Tag> getTagsOnArticle() {
@@ -56,27 +57,27 @@ public class Article {
         this.articleDisplay = articleDisplay;
     }
 
-    public LocalDateTime getTimeCreated() {
+    public ZonedDateTime getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(LocalDateTime timeCreated) {
+    public void setTimeCreated(ZonedDateTime timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public LocalDateTime getTimeUpdated() {
+    public ZonedDateTime getTimeUpdated() {
         return timeUpdated;
     }
 
-    public void setTimeUpdated(LocalDateTime timeUpdated) {
+    public void setTimeUpdated(ZonedDateTime timeUpdated) {
         this.timeUpdated = timeUpdated;
     }
 
-    public LocalDateTime getTimeExpires() {
+    public ZonedDateTime getTimeExpires() {
         return timeExpires;
     }
 
-    public void setTimeExpires(LocalDateTime timeExpires) {
+    public void setTimeExpires(ZonedDateTime timeExpires) {
         this.timeExpires = timeExpires;
     }
 
@@ -85,7 +86,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleContent(), article.getArticleContent()) && Objects.equals(getTimeCreated(), article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires());
+        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleContent(), article.getArticleContent()) && getTimeCreated().equals(article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires());
     }
 
     @Override
