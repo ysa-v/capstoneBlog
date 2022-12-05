@@ -30,11 +30,11 @@ class ArticleDaoDBTest {
         for (Article article: articles) {
             aDao.deleteArticleByID(article.getArticleID());
         }
-//
-//        List<Tag> tags = tDao.getAllTags();
-//        for (Tag tag: tags) {
-//            tDao.deleteTagByID(tag.getTagID());
-//        }
+
+        List<Tag> tags = tDao.getAllTags();
+        for (Tag tag: tags) {
+            tDao.deleteTagByID(tag.getTagID());
+        }
     }
 
     @Test
