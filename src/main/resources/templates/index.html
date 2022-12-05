@@ -11,8 +11,11 @@
     <title>Homepage</title>
   </head>
   <body>
-    <div th:replace="fragments/header::header"></div>
+    <div th:replace="~{fragments/header::header}"></div>
     <h1>Homepage</h1>
+
+    <a href="Post/New">New post</a> <br>
+    <a href="Post/Edit">Edit post</a>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
