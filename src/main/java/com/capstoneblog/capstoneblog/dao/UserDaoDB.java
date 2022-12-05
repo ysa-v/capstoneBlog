@@ -59,15 +59,15 @@ public class UserDaoDB implements UserDao{
     }
 
     @Override
-    public void updateUserById(User user) {
+    public void updateUser(User user) {
         try{
             final String UPDATE_USER = "UPDATE user SET userName =? userPassword = ?, userRole = ? " +
                     "WHERE userID =?";
             jdbc.update(UPDATE_USER,
-                    user.getUserID(),
                     user.getUserName(),
                     user.getUserPassword(),
-                    user.getUserRole());
+                    user.getUserRole(),
+                    user.getUserID());
         } catch (DataAccessException ignored){
         }
 
