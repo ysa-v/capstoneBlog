@@ -11,14 +11,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.time.ZonedDateTime;
 
 @Repository
 public class ArticleDaoDB implements ArticleDao{
 
     @Autowired
     JdbcTemplate jdbc;
+
+    Clock clock = Clock.system(ZoneId.of("America/Chicago"));
 
     public static final class ArticleMapper implements RowMapper<Article>
     {
@@ -30,9 +36,16 @@ public class ArticleDaoDB implements ArticleDao{
             article.setArticleTitle(rs.getString("articleTitle"));
             article.setArticleContent(rs.getString("articleContent"));
             article.setArticleDisplay(rs.getInt("articleIsApproved"));
-            article.setTimeCreated(rs.getTimestamp("articleCreateDate").toLocalDateTime());
-            article.setTimeUpdated(rs.getTimestamp("articleCreateDate").toLocalDateTime());
-            article.setTimeExpires(rs.getTimestamp("articleExpire").toLocalDateTime());
+            article.setTimeCreated(rs.getTimestamp("articleCreateDate").toLocalDateTime().atZone(ZoneId.of("America/Chicago")));
+            article.setTimeUpdated(rs.getTimestamp("articleUpdateDate").toLocalDateTime().atZone(ZoneId.of("America/Chicago")));
+
+            String expiration = rs.getString("articleExpire");
+
+            if (expiration == null) {
+                return article;
+            } else {
+                article.setTimeExpires(rs.getTimestamp("articleExpire").toLocalDateTime().atZone(ZoneId.of("America/Chicago")));
+            }
             return article;
         }
     }
@@ -40,12 +53,13 @@ public class ArticleDaoDB implements ArticleDao{
     @Override
     public Article getArticleByID(int ID) {
         try {
-            final String GET_ARTICLE_BY_IO = "SELECT * FROM article WHERE articleID =?";
+            final String GET_ARTICLE_BY_IO = "SELECT * FROM article WHERE articleID = ?";
             Article article = jdbc.queryForObject(GET_ARTICLE_BY_IO, new ArticleMapper(), ID);
-            article.setTagsOnArticle(getTagsForArticle(article));
+//            article.setTagsOnArticle(getTagsForArticle(article));
             return article;}
         catch (DataAccessException e)
-            {return null;}
+            {System.out.println("Data access issue");
+                return null;}
     }
 
     @Override
@@ -62,9 +76,11 @@ public class ArticleDaoDB implements ArticleDao{
 
     @Override
     public Article addArticle(Article article) {
-        article.setTimeCreated(LocalDateTime.now());
-        final String INSERT_ARTICLE = "INSERT INTO article(articleTitle =?, articleContent =?, articleCreateDate =? " +
-                "articleIsApproved =?, articleUpdateDate =?, articleExpire =? VALUES (?, ?, ?, ?, ?)";
+        article.setTimeCreated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
+        article.setTimeUpdated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
+//        article.setTimeExpires(LocalDateTime.now());
+        final String INSERT_ARTICLE = "INSERT INTO article(articleTitle, articleContent, articleCreateDate, " +
+                "articleIsApproved, articleUpdateDate, articleExpire) VALUES (?, ?, ?, ?, ?, ?)";
         jdbc.update(INSERT_ARTICLE,
                 article.getArticleTitle(),
                 article.getArticleContent(),
@@ -79,7 +95,7 @@ public class ArticleDaoDB implements ArticleDao{
 
     @Override
     public void updateArticle(Article article) {
-        article.setTimeUpdated(LocalDateTime.now());
+        article.setTimeUpdated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
         final String UPDATE_ARTICLE = "UPDATE article SET articleTitle =?, articleContent =?, articleCreateDate =? " +
                 "articleIsApproved=? articleUpdateDate =?,articleExpire = ? WHERE articleID =?";
         jdbc.update(UPDATE_ARTICLE,
