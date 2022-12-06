@@ -86,11 +86,12 @@ public class TagDaoDB implements TagDao{
     @Override
     public List<Article> getArticlesForTag(Tag tag) {
         try {
-            final String SELECT_ARTICLES_FOR_TAG = "SELECT a* FROM article a " +
-                    "JOIN article_tag at ON a.articleID = at.articleID WHERE at.articleID =?";
+            final String SELECT_ARTICLES_FOR_TAG = "SELECT * FROM article a " +
+                    "JOIN article_tag at ON a.articleID = at.articleID WHERE at.tagID =?";
             return jdbc.query(SELECT_ARTICLES_FOR_TAG, new ArticleDaoDB.ArticleMapper(), tag.getTagID());
         } catch (DataAccessException e) {
-            return null;
+            System.out.println("Data access issue on get articles for tag");
+            return new ArrayList<>();
         }
     }
 
@@ -98,9 +99,7 @@ public class TagDaoDB implements TagDao{
     private void insertArticleTagTable(Tag tag){
         final String INSERT_ARTICLE_TAG = "INSERT INTO article_tag(articleID, tagID) VALUES (?,?)";
         List<Article> articles = tag.getArticlesWithTag();
-        if (articles == null) {
-            return;
-        } else {
+        if (!articles.isEmpty()) {
             for(Article article: articles) {
                 jdbc.update(INSERT_ARTICLE_TAG, article.getArticleID(), tag.getTagID());
             }
