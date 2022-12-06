@@ -1,11 +1,34 @@
 package com.capstoneblog.capstoneblog.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Tag {
 
     private int tagID;
     private String tagName;
+    private List<Article> articlesWithTag = new ArrayList<>();
+
+    public List<Article> getArticlesWithTag() {
+        return articlesWithTag;
+    }
+
+    public void setArticlesWithTag(List<Article> articlesWithTag) {
+
+        this.articlesWithTag = articlesWithTag;
+        if (articlesWithTag != null) {
+            for (Article article : articlesWithTag) {
+                List<Tag> tagsOnArticle = article.getTagsOnArticle();
+                if (tagsOnArticle.contains(this)) {
+                    continue;
+                } else {
+                    tagsOnArticle.add(this);
+                    article.setTagsOnArticle(tagsOnArticle);
+                }
+            }
+        }
+    }
 
     public int getTagID() {
         return tagID;

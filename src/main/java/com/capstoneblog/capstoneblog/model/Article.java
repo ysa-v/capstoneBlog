@@ -1,17 +1,24 @@
 package com.capstoneblog.capstoneblog.model;
 
+import jakarta.annotation.Nullable;
+
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Article {
 
     private int articleID;
+    private String articleTitle;
     private String articleContent;
     // 0 = not displayed, 1 = displayed
     private int articleDisplay;
-    private LocalDateTime timeCreated;
-    private LocalDateTime timeUpdated;
-    private LocalDateTime timeExpires;
+    private ZonedDateTime timeCreated;
+    private ZonedDateTime timeUpdated;
+    private ZonedDateTime timeExpires;
+    private List<Tag> tagsOnArticle = new ArrayList<>();
 
     public int getArticleID() {
         return articleID;
@@ -19,6 +26,14 @@ public class Article {
 
     public void setArticleID(int articleID) {
         this.articleID = articleID;
+    }
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
     }
 
     public String getArticleContent() {
@@ -37,28 +52,48 @@ public class Article {
         this.articleDisplay = articleDisplay;
     }
 
-    public LocalDateTime getTimeCreated() {
+    public ZonedDateTime getTimeCreated() {
         return timeCreated;
     }
 
-    public void setTimeCreated(LocalDateTime timeCreated) {
+    public void setTimeCreated(ZonedDateTime timeCreated) {
         this.timeCreated = timeCreated;
     }
 
-    public LocalDateTime getTimeUpdated() {
+    public ZonedDateTime getTimeUpdated() {
         return timeUpdated;
     }
 
-    public void setTimeUpdated(LocalDateTime timeUpdated) {
+    public void setTimeUpdated(ZonedDateTime timeUpdated) {
         this.timeUpdated = timeUpdated;
     }
 
-    public LocalDateTime getTimeExpires() {
+    public ZonedDateTime getTimeExpires() {
         return timeExpires;
     }
 
-    public void setTimeExpires(LocalDateTime timeExpires) {
+    public void setTimeExpires(ZonedDateTime timeExpires) {
         this.timeExpires = timeExpires;
+    }
+
+    public void setTagsOnArticle(List<Tag> tagsOnArticle) {
+
+        this.tagsOnArticle = tagsOnArticle;
+        if (tagsOnArticle != null) {
+            for (Tag tag : tagsOnArticle) {
+                List<Article> articlesWithTag = tag.getArticlesWithTag();
+                if (articlesWithTag.contains(this)) {
+                    continue;
+                } else {
+                    articlesWithTag.add(this);
+                    tag.setArticlesWithTag(articlesWithTag);
+                }
+            }
+        }
+    }
+
+    public List<Tag> getTagsOnArticle() {
+        return tagsOnArticle;
     }
 
     @Override
@@ -66,7 +101,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleContent(), article.getArticleContent()) && Objects.equals(getTimeCreated(), article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires());
+        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleContent(), article.getArticleContent()) && getTimeCreated().equals(article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires());
     }
 
     @Override
