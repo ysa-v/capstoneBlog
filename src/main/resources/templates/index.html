@@ -15,6 +15,9 @@
     <h1>Homepage</h1>
 
     <p th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]</p>
+    <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Sign Out"/>
+    </form>
 
     <a href="Post/New">New post</a> <br>
     <a href="Post/Edit">Edit post</a>
