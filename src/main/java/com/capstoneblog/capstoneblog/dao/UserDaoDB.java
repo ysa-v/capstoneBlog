@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class UserDaoDB implements UserDao{
 
     @Autowired
@@ -52,7 +54,8 @@ public class UserDaoDB implements UserDao{
     @Override
     public void deleteUserById(int id) {
         try{
-            final String DELETE_USER_BY_ID = "DELETE * FROM user WHERE userID = ?";
+            final String DELETE_USER_BY_ID = "DELETE FROM user WHERE userID = ?";
+            jdbc.update(DELETE_USER_BY_ID, id);
         } catch (DataAccessException ignored){
 
         }
@@ -61,7 +64,7 @@ public class UserDaoDB implements UserDao{
     @Override
     public void updateUser(User user) {
         try{
-            final String UPDATE_USER = "UPDATE user SET userName =? userPassword = ?, userRole = ? " +
+            final String UPDATE_USER = "UPDATE user SET userName = ?, userPassword = ?, userRole = ? " +
                     "WHERE userID =?";
             jdbc.update(UPDATE_USER,
                     user.getUserName(),

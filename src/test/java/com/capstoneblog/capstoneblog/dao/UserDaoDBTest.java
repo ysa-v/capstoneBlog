@@ -2,15 +2,18 @@ package com.capstoneblog.capstoneblog.dao;
 
 
 import com.capstoneblog.capstoneblog.model.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class UserDaoDBTest {
 
     @Autowired
@@ -22,6 +25,11 @@ class UserDaoDBTest {
         for(User user: users){
             userDao.deleteUserById(user.getUserID());
         }
+    }
+
+    @AfterEach
+    void tearDown(){
+
     }
 
     @Test

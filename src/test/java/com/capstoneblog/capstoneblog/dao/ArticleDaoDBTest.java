@@ -2,11 +2,15 @@ package com.capstoneblog.capstoneblog.dao;
 
 import com.capstoneblog.capstoneblog.model.Article;
 import com.capstoneblog.capstoneblog.model.Tag;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,44 +24,124 @@ class ArticleDaoDBTest {
     @Autowired
     TagDao tDao;
 
+    @BeforeEach
+    void setUp() {
+        List<Article> articles = aDao.getAllArticles();
+        for (Article article: articles) {
+            aDao.deleteArticleByID(article.getArticleID());
+        }
+
+        List<Tag> tags = tDao.getAllTags();
+        for (Tag tag: tags) {
+            tDao.deleteTagByID(tag.getTagID());
+        }
+    }
+
     @Test
     void testAddAndGetArticle() {
         Article article = new Article();
         article.setArticleTitle("Test Title");
         article.setArticleContent("Test content.");
         article.setArticleDisplay(0);
-
         article = aDao.addArticle(article);
 
         Article fromDao = aDao.getArticleByID(article.getArticleID());
-
-        System.out.println(article.getTimeCreated());
-        System.out.println(fromDao.getTimeCreated());
-
         assertEquals(article, fromDao);
     }
 
     @Test
-    void getAllArticles() {
+    void testGetAllArticles() {
+        Article article = new Article();
+        article.setArticleTitle("Test Title");
+        article.setArticleContent("Test content.");
+        article.setArticleDisplay(0);
+        article = aDao.addArticle(article);
+
+        Article article2 = new Article();
+        article2.setArticleTitle("Test Title 2");
+        article2.setArticleContent("Test content 2.");
+        article2.setArticleDisplay(0);
+        article2 = aDao.addArticle(article2);
+
+        List<Article> articles = new ArrayList<>();
+        articles.add(article);
+        articles.add(article2);
+
+        List<Article> fromDao = aDao.getAllArticles();
+        assertEquals(2, fromDao.size());
+        assertTrue(fromDao.containsAll(articles));
     }
 
     @Test
-    void addArticle() {
+    void testUpdateArticle() {
+        Article article = new Article();
+        article.setArticleTitle("Test Title");
+        article.setArticleContent("Test content.");
+        article.setArticleDisplay(0);
+        article = aDao.addArticle(article);
+
+        Article fromDao = aDao.getArticleByID(article.getArticleID());
+        assertEquals(article, fromDao);
+
+        article.setTimeExpires(ZonedDateTime.of(
+                2023,1,1,0,0,0,0,
+                ZoneId.of("America/Chicago")).truncatedTo(ChronoUnit.SECONDS));
+
+        fromDao = aDao.getArticleByID(article.getArticleID());
+        assertNotEquals(article, fromDao);
+
+        aDao.updateArticle(article);
+
+        fromDao = aDao.getArticleByID(article.getArticleID());
+        assertEquals(article, fromDao);
     }
 
     @Test
-    void updateArticle() {
+    void testDeleteArticleByID() {
+        Article article = new Article();
+        article.setArticleTitle("Test Title");
+        article.setArticleContent("Test content.");
+        article.setArticleDisplay(0);
+        article = aDao.addArticle(article);
+
+        Article fromDao = aDao.getArticleByID(article.getArticleID());
+        assertEquals(article, fromDao);
+
+        aDao.deleteArticleByID(article.getArticleID());
+
+        fromDao = aDao.getArticleByID(article.getArticleID());
+        assertNull(fromDao);
     }
 
     @Test
-    void deleteArticleByID() {
+    void testAddAndGetTagsForArticle() {
+        Tag tag = new Tag();
+        tag.setTagName("Test tag");
+        tag = tDao.addTag(tag);
+
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+
+        Article article = new Article();
+        article.setArticleTitle("Test Title");
+        article.setArticleContent("Test content.");
+        article.setArticleDisplay(0);
+        article.setTagsOnArticle(tags);
+        article = aDao.addArticle(article);
+
+        List<Article> articles = new ArrayList<>();
+        articles.add(article);
+        tag.setArticlesWithTag(articles);
+        tDao.updateTag(tag);
+
+        Article fromDao = aDao.getArticleByID(article.getArticleID());
+        assertEquals(article, fromDao);
+
+        List<Tag> fromDaoTags = aDao.getTagsForArticle(fromDao);
+        assertTrue(fromDaoTags.containsAll(tags));
     }
 
     @Test
-    void getTagsForArticle() {
-    }
-
-    @Test
-    void addTagsToArticles() {
+    void testAddTagsToArticles() {
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,6 +24,7 @@ public class TagDaoDB implements TagDao{
         @Override
         public Tag mapRow(ResultSet rs, int index) throws SQLException{
             Tag tag = new Tag();
+            tag.setTagID(rs.getInt("tagID"));
             tag.setTagName(rs.getString("hashtag"));
             return tag;
         }
@@ -57,8 +59,7 @@ public class TagDaoDB implements TagDao{
     @Override
     public Tag addTag(Tag tag) {
         final String INSERT_TAG = "INSERT INTO tag(hashtag) VALUES(?)";
-        jdbc.update(INSERT_TAG,
-                tag.getTagName());
+        jdbc.update(INSERT_TAG, tag.getTagName());
         int newID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         tag.setTagID(newID);
         insertArticleTagTable(tag);
@@ -68,32 +69,41 @@ public class TagDaoDB implements TagDao{
     @Override
     public void updateTag(Tag tag) {
         final String UPDATE_TAG = "UPDATE tag SET hashtag = ? WHERE tagID =?";
-        jdbc.update(UPDATE_TAG, tag.getTagID());
+        jdbc.update(UPDATE_TAG, tag.getTagName(), tag.getTagID());
 
     }
 
     @Override
     @Transactional
     public void deleteTagByID(int ID) {
-        final String DELETE_ARTICLE_TAG = "DELETE * FROM article_tag WHERE tagID =?";
+        final String DELETE_ARTICLE_TAG = "DELETE at.* FROM article_tag at WHERE tagID = ?";
         jdbc.update(DELETE_ARTICLE_TAG, ID);
-        final String DELETE_TAG = "DELETE * FROM tag WHERE tagID =?";
-        jdbc.update(DELETE_TAG);
+        final String DELETE_TAG = "DELETE t.* FROM tag t WHERE tagID = ?";
+        jdbc.update(DELETE_TAG, ID);
 
     }
 
     @Override
     public List<Article> getArticlesForTag(Tag tag) {
-        final String SELECT_ARTICLES_FOR_TAG = "SELECT a* FROM article " +
-                "JOIN article_tag at ON a.articleID = at.articleID WHERE at.articleID =?";
-        return jdbc.query(SELECT_ARTICLES_FOR_TAG, new ArticleDaoDB.ArticleMapper(), tag.getTagID());
+        try {
+            final String SELECT_ARTICLES_FOR_TAG = "SELECT a* FROM article a " +
+                    "JOIN article_tag at ON a.articleID = at.articleID WHERE at.articleID =?";
+            return jdbc.query(SELECT_ARTICLES_FOR_TAG, new ArticleDaoDB.ArticleMapper(), tag.getTagID());
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
 
     private void insertArticleTagTable(Tag tag){
         final String INSERT_ARTICLE_TAG = "INSERT INTO article_tag(articleID, tagID) VALUES (?,?)";
-        for(Article article: tag.getArticlesWithTag()){
-            jdbc.update(INSERT_ARTICLE_TAG, tag.getTagID(), article.getArticleID());
+        List<Article> articles = tag.getArticlesWithTag();
+        if (articles == null) {
+            return;
+        } else {
+            for(Article article: articles) {
+                jdbc.update(INSERT_ARTICLE_TAG, article.getArticleID(), tag.getTagID());
+            }
         }
     }
 }
