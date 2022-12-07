@@ -1,6 +1,5 @@
 package com.capstoneblog.capstoneblog.dao;
 
-import com.capstoneblog.capstoneblog.model.Article;
 import com.capstoneblog.capstoneblog.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -54,7 +53,7 @@ public class UserDaoDB implements UserDao{
     @Override
     public void deleteUserById(int id) {
         try{
-            final String DELETE_USER_BY_ID = "DELETE FROM user WHERE userID = ?";
+            final String DELETE_USER_BY_ID = "DELETE u.* FROM user u WHERE userID = ?";
             jdbc.update(DELETE_USER_BY_ID, id);
         } catch (DataAccessException ignored){
 

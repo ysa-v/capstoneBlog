@@ -20,9 +20,7 @@ public class Tag {
         if (articlesWithTag != null) {
             for (Article article : articlesWithTag) {
                 List<Tag> tagsOnArticle = article.getTagsOnArticle();
-                if (tagsOnArticle.contains(this)) {
-                    continue;
-                } else {
+                if (!tagsOnArticle.contains(this)) {
                     tagsOnArticle.add(this);
                     article.setTagsOnArticle(tagsOnArticle);
                 }
@@ -51,11 +49,24 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return getTagID() == tag.getTagID() && getTagName().equals(tag.getTagName());
+        return getTagID() == tag.getTagID() && getTagName().equals(tag.getTagName()) && Objects.equals(getArticlesWithTag(), tag.getArticlesWithTag());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTagID(), getTagName());
+        return Objects.hash(getTagID(), getTagName(), getArticlesWithTag());
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Tag tag = (Tag) o;
+//        return getTagID() == tag.getTagID() && getTagName().equals(tag.getTagName());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getTagID(), getTagName());
+//    }
 }

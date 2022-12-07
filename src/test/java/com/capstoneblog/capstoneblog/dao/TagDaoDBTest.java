@@ -115,13 +115,16 @@ class TagDaoDBTest {
         tag.setArticlesWithTag(articles);
         tag = tDao.addTag(tag);
 
+        List<Tag> tagsOnArticle = article.getTagsOnArticle();
+        assertTrue(tagsOnArticle.contains(tag));
+
         Tag fromDao = tDao.getTagByID(tag.getTagID());
         assertEquals(tag, fromDao);
 
         System.out.println(tag.getArticlesWithTag());
 
-//        List<Article> fromDaoArticles = fromDao.getArticlesWithTag();
-//        assertEquals(2, fromDaoArticles.size());
-//        assertTrue(fromDaoArticles.containsAll(articles));
+        List<Article> fromDaoArticles = fromDao.getArticlesWithTag();
+        assertEquals(2, fromDaoArticles.size());
+        assertTrue(fromDaoArticles.containsAll(articles));
     }
 }
