@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,14 +11,21 @@
 
     <title>Homepage</title>
   </head>
+
   <body>
     <div th:replace="~{fragments/header::header}"></div>
     <h1>Homepage</h1>
 
-    <p th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]</p>
-    <form th:action="@{/logout}" method="post">
-      <input type="submit" value="Sign Out"/>
-    </form>
+    <div sec:authorize="isAuthenticated()">
+      <p th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]</p>
+      <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out" />
+      </form>
+    </div>
+    <div sec:authorize="isAnonymous()">
+      <p>Not signed in</p>
+      <a href="/login">Sign In</a>
+    </div>
 
     <a href="Post/New">New post</a> <br>
     <a href="Post/Edit">Edit post</a>
@@ -28,4 +36,5 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   </body>
+
 </html>
