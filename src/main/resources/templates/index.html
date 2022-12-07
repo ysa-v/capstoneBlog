@@ -16,6 +16,10 @@
 
     <a href="Post/New">New post</a> <br>
     <a href="Post/Edit">Edit post</a>
+    
+    <div th:each="post:${posts}">
+        <div th:replace="~{fragments/post-preview::post-preview}"></div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
