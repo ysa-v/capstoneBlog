@@ -16,3 +16,15 @@ $(document).on('focusin', function (e) {
         e.stopImmediatePropagation();
     }
 });
+
+var dateSelect = document.getElementById("timeExpires");
+
+function disableDateSelect() {
+    dateSelect.disabled = true;
+    // alert("disabled");
+}
+
+function enableDateSelect() {
+    dateSelect.disabled = false;
+    // alert("enabled");
+}

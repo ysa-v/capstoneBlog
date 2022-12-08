@@ -20,7 +20,7 @@
                         <h5 class="card-title" th:text="${post.articleTitle}">Sample Title</h5>
                         <p class="card-text" th:text="${post.articleContent}">Summary for the sample post. It gives a preview of the post so the user can tell if they're interested in reading.</p>
                         <p class="card-text"><small class="text-muted" th:text="${post.timeCreated}">Nov 15, 2022</small></p>
-                        <a th:href="@{View/+${post.articleID}}">Read full post</a>
+                        <a th:href="@{'Post/'+${post.articleID}}">Read full post</a>
                     </div>
                 </div>
             </div>
