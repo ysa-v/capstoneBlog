@@ -43,7 +43,6 @@ class UserDaoDBTest {
         User fromDao = userDao.getUserByID(user.getUserID());
 
         assertEquals(user, fromDao);
-
     }
 
     @Test

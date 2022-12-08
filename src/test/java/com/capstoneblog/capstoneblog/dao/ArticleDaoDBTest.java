@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -139,9 +138,5 @@ class ArticleDaoDBTest {
 
         List<Tag> fromDaoTags = aDao.getTagsForArticle(fromDao);
         assertTrue(fromDaoTags.containsAll(tags));
-    }
-
-    @Test
-    void testAddTagsToArticles() {
     }
 }

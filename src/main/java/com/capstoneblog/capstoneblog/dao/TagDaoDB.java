@@ -90,7 +90,6 @@ public class TagDaoDB implements TagDao{
                     "JOIN article_tag at ON a.articleID = at.articleID WHERE at.tagID =?";
             return jdbc.query(SELECT_ARTICLES_FOR_TAG, new ArticleDaoDB.ArticleMapper(), tag.getTagID());
         } catch (DataAccessException e) {
-            System.out.println("Data access issue on get articles for tag");
             return new ArrayList<>();
         }
     }
