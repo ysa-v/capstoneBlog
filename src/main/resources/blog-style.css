@@ -1,0 +1,22 @@
+.main-article-title {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+.main-article-category,.author-name:hover {
+  color: rgba(0,0,0,0.4);
+}
+
+.main-article-category:hover,.main-article-title:hover,.author-name{ 
+  text-decoration: underline;
+}
+
+footer {
+  color: white;
+  background-color: #343a40;
+}
+
+.recent-articles {
+  font-size: 1.7em;
+  font-weight: bold;
+}
