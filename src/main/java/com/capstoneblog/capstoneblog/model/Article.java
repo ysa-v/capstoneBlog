@@ -1,7 +1,5 @@
 package com.capstoneblog.capstoneblog.model;
 
-import jakarta.annotation.Nullable;
-
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
