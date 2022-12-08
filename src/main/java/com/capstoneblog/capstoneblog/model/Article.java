@@ -1,8 +1,5 @@
 package com.capstoneblog.capstoneblog.model;
 
-import jakarta.annotation.Nullable;
-
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,13 +75,11 @@ public class Article {
 
     public void setTagsOnArticle(List<Tag> tagsOnArticle) {
 
-        this.tagsOnArticle = tagsOnArticle;
         if (tagsOnArticle != null) {
+            this.tagsOnArticle = tagsOnArticle;
             for (Tag tag : tagsOnArticle) {
                 List<Article> articlesWithTag = tag.getArticlesWithTag();
-                if (articlesWithTag.contains(this)) {
-                    continue;
-                } else {
+                if (!articlesWithTag.contains(this)) {
                     articlesWithTag.add(this);
                     tag.setArticlesWithTag(articlesWithTag);
                 }

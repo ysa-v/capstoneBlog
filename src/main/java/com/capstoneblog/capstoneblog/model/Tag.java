@@ -16,8 +16,8 @@ public class Tag {
 
     public void setArticlesWithTag(List<Article> articlesWithTag) {
 
-        this.articlesWithTag = articlesWithTag;
         if (articlesWithTag != null) {
+            this.articlesWithTag = articlesWithTag;
             for (Article article : articlesWithTag) {
                 List<Tag> tagsOnArticle = article.getTagsOnArticle();
                 if (!tagsOnArticle.contains(this)) {

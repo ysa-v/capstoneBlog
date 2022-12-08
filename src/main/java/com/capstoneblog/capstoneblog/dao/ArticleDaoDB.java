@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -121,7 +120,7 @@ public class ArticleDaoDB implements ArticleDao{
     public List<Tag> getTagsForArticle(Article article) {
         try {
             final String SELECT_TAGS_FOR_ARTICLE = "SELECT * FROM tag " +
-                    "JOIN article_tag ON tag.articleID = article_tag.articleID WHERE article_tag.articleID = ?";
+                    "JOIN article_tag ON tag.tagID = article_tag.tagID WHERE article_tag.articleID = ?";
             return jdbc.query(SELECT_TAGS_FOR_ARTICLE, new TagDaoDB.TagMapper(), article.getArticleID());
         } catch (DataAccessException e) {
             return null;
