@@ -121,8 +121,6 @@ class TagDaoDBTest {
         Tag fromDao = tDao.getTagByID(tag.getTagID());
         assertEquals(tag, fromDao);
 
-        System.out.println(tag.getArticlesWithTag());
-
         List<Article> fromDaoArticles = fromDao.getArticlesWithTag();
         assertEquals(2, fromDaoArticles.size());
         assertTrue(fromDaoArticles.containsAll(articles));
