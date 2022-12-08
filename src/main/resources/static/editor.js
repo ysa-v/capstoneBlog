@@ -17,14 +17,17 @@ $(document).on('focusin', function (e) {
     }
 });
 
-var dateSelect = document.getElementById("timeExpires");
+var dateSelect = document.getElementsByClassName("expireDateSelect")[0];
+var dateDefault = document.getElementsByClassName("expireDateDefault")[0];
 
 function disableDateSelect() {
+    dateDefault.disabled = false;
     dateSelect.disabled = true;
     // alert("disabled");
 }
 
 function enableDateSelect() {
+    dateDefault.disabled = true;
     dateSelect.disabled = false;
     // alert("enabled");
 }

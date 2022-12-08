@@ -6,7 +6,7 @@ USE blogDBTest;
 DROP TABLE IF EXISTS article;
 CREATE TABLE article (
     articleID INT AUTO_INCREMENT,
-    articleTitle VARCHAR(20) NOT NULL,
+    articleTitle VARCHAR(100) NOT NULL,
     articleContent MEDIUMTEXT NOT NULL,
     articleIsApproved BIT NOT NULL,
     articleCreateDate DATETIME NOT NULL,

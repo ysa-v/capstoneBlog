@@ -18,7 +18,7 @@ public class WebSecurityConfig
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         http.authorizeHttpRequests((requests) -> requests
-                .antMatchers("/", "/Post/**", "/unsecure")
+                .antMatchers("/", "/Post")
                 .permitAll()
                 .anyRequest()
                 .authenticated())

@@ -103,11 +103,11 @@ public class ArticleDaoDB implements ArticleDao{
     }
 
     @Override
-    public void updateArticle(Article article) {
+    public int updateArticle(Article article) {
         article.setTimeUpdated(ZonedDateTime.now(clock).truncatedTo(ChronoUnit.SECONDS));
         final String UPDATE_ARTICLE = "UPDATE article SET articleTitle = ?, articleContent = ?, articleCreateDate = ?, " +
                 "articleIsApproved = ?, articleUpdateDate = ?, articleExpire = ? WHERE articleID = ?";
-        jdbc.update(UPDATE_ARTICLE,
+        return jdbc.update(UPDATE_ARTICLE,
                 article.getArticleTitle(),
                 article.getArticleContent(),
                 article.getTimeCreated(),
