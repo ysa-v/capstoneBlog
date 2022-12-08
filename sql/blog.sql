@@ -39,11 +39,10 @@ CREATE TABLE user(
 
 DROP TABLE IF EXISTS article_tag;
 CREATE TABLE article_tag(
-    article_tagID INT AUTO_INCREMENT,
-    articleID INT NOT NULL,
-    tagID INT NOT NULL,
+    articleID INT,
+    tagID INT,
     CONSTRAINT pk_article_tag
-        PRIMARY KEY (article_tagID),
+        PRIMARY KEY (articleID, tagID),
     CONSTRAINT fk_article_tag_article
         FOREIGN KEY (articleID)
         REFERENCES article (articleID),

@@ -118,8 +118,13 @@ class ArticleDaoDBTest {
         tag.setTagName("Test tag");
         tag = tDao.addTag(tag);
 
+        Tag tag2 = new Tag();
+        tag2.setTagName("Test tag 2");
+        tag2 = tDao.addTag(tag2);
+
         List<Tag> tags = new ArrayList<>();
         tags.add(tag);
+        tags.add(tag2);
 
         Article article = new Article();
         article.setArticleTitle("Test Title");
@@ -128,15 +133,11 @@ class ArticleDaoDBTest {
         article.setTagsOnArticle(tags);
         article = aDao.addArticle(article);
 
-        List<Article> articles = new ArrayList<>();
-        articles.add(article);
-        tag.setArticlesWithTag(articles);
-        tDao.updateTag(tag);
-
         Article fromDao = aDao.getArticleByID(article.getArticleID());
         assertEquals(article, fromDao);
 
-        List<Tag> fromDaoTags = aDao.getTagsForArticle(fromDao);
+        List<Tag> fromDaoTags = fromDao.getTagsOnArticle();
+        assertEquals(2, fromDaoTags.size());
         assertTrue(fromDaoTags.containsAll(tags));
     }
 }

@@ -98,6 +98,7 @@ public class ArticleDaoDB implements ArticleDao{
                 article.getTimeExpires());
         int newID = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         article.setArticleID(newID);
+        insertArticleTagTable(article);
         return article;
     }
 
@@ -140,6 +141,20 @@ public class ArticleDaoDB implements ArticleDao{
     public void addTagsToArticles(List<Article> articles) {
         for(Article article : articles){
             article.setTagsOnArticle(getTagsForArticle(article));
+        }
+    }
+
+    private void insertArticleTagTable(Article article){
+        final String INSERT_ARTICLE_TAG = "INSERT INTO article_tag(articleID, tagID) VALUES (?,?)";
+        List<Tag> tags = article.getTagsOnArticle();
+        if(!tags.isEmpty()) {
+            for (Tag tag: tags) {
+                try {
+                    jdbc.update(INSERT_ARTICLE_TAG, article.getArticleID(), tag.getTagID());
+                } catch (DataAccessException e) {
+                    System.out.println("Duplicate entry prevented");
+                }
+            }
         }
     }
 }

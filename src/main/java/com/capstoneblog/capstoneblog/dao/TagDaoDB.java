@@ -100,7 +100,11 @@ public class TagDaoDB implements TagDao{
         List<Article> articles = tag.getArticlesWithTag();
         if (!articles.isEmpty()) {
             for(Article article: articles) {
-                jdbc.update(INSERT_ARTICLE_TAG, article.getArticleID(), tag.getTagID());
+                try {
+                    jdbc.update(INSERT_ARTICLE_TAG, article.getArticleID(), tag.getTagID());
+                } catch (DataAccessException e) {
+                    System.out.println("Duplicate entry prevented");
+                }
             }
         }
     }
