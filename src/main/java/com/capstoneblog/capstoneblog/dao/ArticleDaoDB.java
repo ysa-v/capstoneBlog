@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.time.Clock;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.time.ZonedDateTime;
 
@@ -131,7 +132,7 @@ public class ArticleDaoDB implements ArticleDao{
                     "JOIN article_tag ON tag.tagID = article_tag.tagID WHERE article_tag.articleID = ?";
             return jdbc.query(SELECT_TAGS_FOR_ARTICLE, new TagDaoDB.TagMapper(), article.getArticleID());
         } catch (DataAccessException e) {
-            return null;
+            return new ArrayList<>();
         }
     }
 
