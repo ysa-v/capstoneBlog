@@ -1,5 +1,7 @@
 package com.capstoneblog.capstoneblog.model;
 
+import org.springframework.lang.Nullable;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Article {
     private int articleDisplay;
     private ZonedDateTime timeCreated;
     private ZonedDateTime timeUpdated;
+    @Nullable
     private ZonedDateTime timeExpires;
     private List<Tag> tagsOnArticle = new ArrayList<>();
 
