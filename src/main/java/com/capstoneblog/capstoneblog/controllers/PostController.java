@@ -13,11 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.config.SortedResourcesFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.capstoneblog.capstoneblog.dao.ArticleDaoDB;
 import com.capstoneblog.capstoneblog.dao.TagDaoDB;
@@ -40,7 +44,7 @@ public class PostController
         Article post = new Article();
         post.setArticleID(0);
 
-        model.addAttribute("tags", getSortedTags());
+        model.addAttribute("tagList", tagsSortedAlphabetically());
         model.addAttribute("action", "New");
         model.addAttribute("post", post);
         model.addAttribute("postExpires", post.getTimeExpires() != null);
@@ -55,7 +59,7 @@ public class PostController
 
         Article post = articleDao.getArticleByID(postID);
 
-        model.addAttribute("tags", getSortedTags());
+        model.addAttribute("tagList", tagsSortedAlphabetically());
         model.addAttribute("action", "Edit");
         model.addAttribute("post", post);
         model.addAttribute("postExpires", post.getTimeExpires() != null);
@@ -66,7 +70,6 @@ public class PostController
     @GetMapping("/{postID}")
     public String viewPost(Model model, @PathVariable int postID)
     {
-        model.addAttribute("tags", getSortedTags());
         model.addAttribute("post", articleDao.getArticleByID(postID));
 
         return "post";
@@ -74,7 +77,8 @@ public class PostController
 
     @PostMapping("/update")
     public ResponseEntity updatePost(Article requestArticle, @RequestParam("ifExpires") boolean ifExpires,
-            @RequestParam("expireDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate expireDate)
+            @RequestParam("expireDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate expireDate,
+            @RequestParam int[] tagID)
     {
         Article article = new Article();
 
@@ -83,6 +87,16 @@ public class PostController
         String requestContent = requestArticle.getArticleContent();
         ZonedDateTime requestPostCreated = requestID == 0 ? ZonedDateTime.now()
                 : articleDao.getArticleByID(requestID).getTimeCreated();
+        List<Tag> requestTags = new ArrayList<>();
+
+        for (int id : tagID)
+        {
+            Tag tag = new Tag();
+
+            tag.setTagID(id);
+
+            requestTags.add(tag);
+        }
 
         article.setArticleID(requestID);
         article.setArticleTitle(requestTitle != null ? requestTitle : "");
@@ -93,7 +107,7 @@ public class PostController
         article.setTimeUpdated(ZonedDateTime.now());
         // article.setExpireDate(ifExpires ?
         // expireDate.atStartOfDay(ZoneId.systemDefault()) : null);
-        // tags
+        article.setTagsOnArticle(requestTags);
 
         try
         {
@@ -118,7 +132,23 @@ public class PostController
         }
     }
 
-    private List<Tag> getSortedTags()
+    @PostMapping("/delete/{articleID}")
+    private ResponseEntity deletePost(@PathVariable int articleID)
+    {
+        try
+        {
+            articleDao.deleteArticleByID(articleID);
+
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/")).build();
+        }
+
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    private List<Tag> tagsSortedPopularity()
     {
         List<Tag> sortedTags = new ArrayList<>();
         List<Tag> unsortedTags = tagDaoDB.getAllTags();
@@ -136,6 +166,38 @@ public class PostController
                 if (sortedTags.get(i).getArticlesWithTag().size() > articleCount)
                 {
                     sortedTags.add(tag);
+                    break;
+                }
+            }
+        }
+
+        return sortedTags;
+    }
+
+    private List<Tag> tagsSortedAlphabetically()
+    {
+        List<Tag> sortedTags = new ArrayList<>();
+        List<Tag> unsortedTags = tagDaoDB.getAllTags();
+
+        sortedTags.add(unsortedTags.get(0));
+        unsortedTags.remove(0);
+
+        for (Tag tag : unsortedTags)
+        {
+            String tagName = tag.getTagName();
+            int sTagsLength = sortedTags.size();
+
+            for (int i = 0; i < sTagsLength; ++i)
+            {
+                int comparedTagNames = sortedTags.get(i).getTagName().compareToIgnoreCase(tagName);
+                if (comparedTagNames < 0)
+                {
+                    sortedTags.add(tag);
+                    break;
+                }
+                else if (comparedTagNames == 0)
+                {
+                    break;
                 }
             }
         }
@@ -146,7 +208,7 @@ public class PostController
     @GetMapping("/Tags")
     public String allTags(Model model)
     {
-        model.addAttribute("tags", getSortedTags());
+        model.addAttribute("tags", tagsSortedPopularity());
 
         return "allTags";
     }
@@ -154,9 +216,25 @@ public class PostController
     @GetMapping("/Tag/{tagID}")
     public String tagPage(Model model, @PathVariable int tagID)
     {
-        model.addAttribute("tags", getSortedTags());
+        model.addAttribute("tags", tagsSortedPopularity());
         model.addAttribute("tag", tagDaoDB.getTagByID(tagID));
 
         return "tag";
+    }
+
+    @GetMapping("/tagsSortedAlphabetically")
+    public List<Tag> tagsSortAlpha()
+    {
+        return tagsSortedAlphabetically();
+    }
+
+    @PutMapping("/addTag")
+    public void addTag(@RequestBody String tagName)
+    {
+        Tag tag = new Tag();
+
+        tag.setTagName(tagName);
+
+        tagDaoDB.addTag(tag);
     }
 }
