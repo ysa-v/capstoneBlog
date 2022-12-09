@@ -21,6 +21,9 @@
                         <p class="card-text" th:text="${post.articleContent}">Summary for the sample post. It gives a preview of the post so the user can tell if they're interested in reading.</p>
                         <p class="card-text"><small class="text-muted" th:text="${post.timeCreated}">Nov 15, 2022</small></p>
                         <a th:href="@{'Post/'+${post.articleID}}">Read full post</a>
+                        <div sec:authorize="isAuthenticated()">
+                            <a th:href="@{'Post/Edit/'+${post.articleID}}">Edit/Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>

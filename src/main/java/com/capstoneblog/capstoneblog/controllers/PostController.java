@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.config.SortedResourcesFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.capstoneblog.capstoneblog.dao.ArticleDaoDB;
 import com.capstoneblog.capstoneblog.dao.TagDaoDB;
@@ -125,6 +127,22 @@ public class PostController
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/Post/" + requestID)).build();
         }
         catch (NullPointerException e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/delete/{articleID}")
+    private ResponseEntity deletePost(@PathVariable int articleID)
+    {
+        try
+        {
+            articleDao.deleteArticleByID(articleID);
+
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/")).build();
+        }
+
+        catch (Exception e)
         {
             return ResponseEntity.badRequest().build();
         }

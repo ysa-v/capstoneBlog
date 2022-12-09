@@ -57,6 +57,10 @@
             </fieldset>
             <button type="submit" class="btn btn-primary" th:text="@{${action}+' Post'}">Submit</button>
         </form>
+        <form th:if="@{${action}=='Edit'}" th:action="@{'/Post/delete/'+${post.articleID}}" method="post">
+            <input type="hidden" id="articleID" name="articleID" th:value="${post.articleID}">
+            <button type="submit" class="btn btn-danger">Delete this post</button>
+        </form>
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
