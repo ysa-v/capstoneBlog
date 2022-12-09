@@ -15,23 +15,6 @@
   <body>
     <div th:replace="~{fragments/header::header}"></div>
     <h1>Homepage</h1>
-
-    <div sec:authorize="isAuthenticated()">
-      <p th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]</p>
-      <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out" />
-      </form>
-    </div>
-    <div sec:authorize="isAnonymous()">
-      <p>Not signed in</p>
-      <a href="/login">Sign In</a>
-    </div>
-
-    <br>
-    <a href="Post/Tags">View by tag</a><br>
-    <br>
-    <!-- <a href="Post/New">New post</a> <br> -->
-    <!-- <a href="Post/Edit">Edit post</a> -->
     
     <div th:each="post:${posts}">
         <div th:replace="~{fragments/post-preview::post-preview}"></div>

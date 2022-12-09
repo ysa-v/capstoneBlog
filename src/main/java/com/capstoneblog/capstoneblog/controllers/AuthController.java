@@ -24,9 +24,9 @@ public class AuthController
         return "login";
     }
 
-    // @GetMapping("/logout")
-    // public String logout()
-    // {
-    // //
-    // }
+    @GetMapping("/Dashboard")
+    public String dashboard(Model model)
+    {
+        return "adminDashboard";
+    }
 }

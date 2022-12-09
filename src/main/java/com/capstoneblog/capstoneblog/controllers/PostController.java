@@ -78,7 +78,8 @@ public class PostController
     @PostMapping("/update")
     public ResponseEntity updatePost(Article requestArticle, @RequestParam("ifExpires") boolean ifExpires,
             @RequestParam("expireDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate expireDate,
-            @RequestParam int[] tagID)
+            @RequestParam int[] tagID,
+            @RequestParam boolean needsApproval)
     {
         Article article = new Article();
 
@@ -101,7 +102,7 @@ public class PostController
         article.setArticleID(requestID);
         article.setArticleTitle(requestTitle != null ? requestTitle : "");
         article.setArticleContent(requestContent != null ? requestContent : "");
-        // if writer, mark as not visible
+        article.setArticleDisplay(needsApproval ? 0 : 1);
         article.setArticleDisplay(1);
         article.setTimeCreated(requestPostCreated);
         article.setTimeUpdated(ZonedDateTime.now());
