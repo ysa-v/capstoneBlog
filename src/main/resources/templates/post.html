@@ -15,6 +15,14 @@
   <body>
     <div th:replace="~{fragments/header::header}"></div>
 
+    <div sec:authorize="isAuthenticated()">
+      <h3 th:if="@{${post.articleDisplay}!=1}">This post is hidden and currently awaiting approval.</h3>
+      
+      <div sec:authorize="isAuthenticated()">
+        <a class="btn btn-outline-primary btn-sm btn-block" th:href="@{'/Post/Edit/'+${post.articleID}}">Edit/Delete</a>
+      </div>
+    </div>
+
     <h1 th:text="${post.articleTitle}"></h1>
     <div th:utext="${post.articleContent}"></div>
 
