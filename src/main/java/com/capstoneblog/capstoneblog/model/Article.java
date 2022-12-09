@@ -1,5 +1,7 @@
 package com.capstoneblog.capstoneblog.model;
 
+import org.springframework.lang.Nullable;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Article {
     private int articleDisplay;
     private ZonedDateTime timeCreated;
     private ZonedDateTime timeUpdated;
+    @Nullable
     private ZonedDateTime timeExpires;
     private List<Tag> tagsOnArticle = new ArrayList<>();
 
@@ -96,7 +99,13 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleTitle(), article.getArticleTitle()) && Objects.equals(getArticleContent(), article.getArticleContent()) && Objects.equals(getTimeCreated(), article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires()) && Objects.equals(getTagsOnArticle(), article.getTagsOnArticle());
+        return getArticleID() == article.getArticleID()
+                && getArticleDisplay() == article.getArticleDisplay()
+                && Objects.equals(getArticleTitle(), article.getArticleTitle())
+                && Objects.equals(getArticleContent(), article.getArticleContent())
+                && Objects.equals(getTimeCreated(), article.getTimeCreated())
+                && Objects.equals(getTimeUpdated(), article.getTimeUpdated())
+                && Objects.equals(getTimeExpires(), article.getTimeExpires());
     }
 
     @Override

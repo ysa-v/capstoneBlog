@@ -36,8 +36,18 @@ class TagDaoDBTest {
 
     @Test
     void testAddAndGetTag() {
+        Article article = new Article();
+        article.setArticleTitle("Test Title");
+        article.setArticleContent("Test content.");
+        article.setArticleDisplay(0);
+        article = aDao.addArticle(article);
+
+        List<Article> articles = new ArrayList<>();
+        articles.add(article);
+
         Tag tag = new Tag();
         tag.setTagName("Test tag");
+        tag.setArticlesWithTag(articles);
         tag = tDao.addTag(tag);
 
         Tag fromDao = tDao.getTagByID(tag.getTagID());
