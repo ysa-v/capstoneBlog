@@ -17,10 +17,13 @@
             <div th:fragment="post-preview">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${post.articleTitle}">Sample Title</h5>
-                        <p class="card-text" th:text="${post.articleContent}">Summary for the sample post. It gives a preview of the post so the user can tell if they're interested in reading.</p>
+                        <!-- <h5 class="card-title" th:text="${post.articleTitle}">Sample Title</h5> -->
+                        <a th:href="@{'Post/'+${post.articleID}}" th:text="${post.articleTitle}">Sample Title</a>
+                        <!-- <p class="card-text" th:text="${post.articleContent}">Summary for the sample post. It gives a preview of the post so the user can tell if they're interested in reading.</p> -->
                         <p class="card-text"><small class="text-muted" th:text="${post.timeCreated}">Nov 15, 2022</small></p>
-                        <a th:href="@{'Post/'+${post.articleID}}">Read full post</a>
+                        <div th:each="tag:${post.tagsOnArticle}">
+                            <a th:text="${tag.tagName}" th:href="@{'/Post/Tag/'+${tag.tagID}}"></a>
+                          </div>
                         <div sec:authorize="isAuthenticated()">
                             <a th:href="@{'Post/Edit/'+${post.articleID}}">Edit/Delete</a>
                         </div>
