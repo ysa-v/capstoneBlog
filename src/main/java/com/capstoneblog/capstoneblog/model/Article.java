@@ -96,7 +96,13 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return getArticleID() == article.getArticleID() && getArticleDisplay() == article.getArticleDisplay() && Objects.equals(getArticleTitle(), article.getArticleTitle()) && Objects.equals(getArticleContent(), article.getArticleContent()) && Objects.equals(getTimeCreated(), article.getTimeCreated()) && Objects.equals(getTimeUpdated(), article.getTimeUpdated()) && Objects.equals(getTimeExpires(), article.getTimeExpires()) && Objects.equals(getTagsOnArticle(), article.getTagsOnArticle());
+        return getArticleID() == article.getArticleID()
+                && getArticleDisplay() == article.getArticleDisplay()
+                && Objects.equals(getArticleTitle(), article.getArticleTitle())
+                && Objects.equals(getArticleContent(), article.getArticleContent())
+                && Objects.equals(getTimeCreated(), article.getTimeCreated())
+                && Objects.equals(getTimeUpdated(), article.getTimeUpdated())
+                && Objects.equals(getTimeExpires(), article.getTimeExpires());
     }
 
     @Override
