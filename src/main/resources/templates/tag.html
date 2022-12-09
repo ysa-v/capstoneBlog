@@ -17,7 +17,7 @@
         <h1 th:text="${tag.tagName}"></h1>
 
         <div th:each="post:${tag.articlesWithTag}">
-            <a th:text="${post.articleTitle}" th:href="@{'/Post/'+${post.articleID}}"></a>
+            <a th:if="@{${post.articleDisplay}==1}" th:text="${post.articleTitle}" th:href="@{'/Post/'+${post.articleID}}"></a>
         </div>
 
         <!-- Optional JavaScript -->
