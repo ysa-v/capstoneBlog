@@ -16,14 +16,14 @@
         <div th:replace="~{fragments/header::header}"></div>
         <h1 th:text="@{${action}+' Post'}">Editor</h1>
 
-        <form action="#" th:action="@{Post/update}" method="post" th:object="${post}">
+        <form action="#" th:action="@{/Post/update}" method="post" th:object="${post}">
             <input type="hidden" id="articleID" name="articleID" th:value="${post.articleID}">
             <div class="form-group">
                 <label for="articleTitle">Title</label>
                 <input type="text" class="form-control" name="articleTitle" id="articleTitle" placeholder="Title" th:value="${post.articleTitle}">
             </div>
             <div class="form-group">
-                <textarea id="tiny" th:text="${post.articleContent}"></textarea>
+                <textarea id="tiny" name="articleContent" th:text="${post.articleContent}"></textarea>
             </div>
             <fieldset class="form-group" id="ifExpires">
                 <legend class="form-label">Visibility</legend>
@@ -37,8 +37,9 @@
                 </div>
             </fieldset>
             <div class="form-group">
-                <label class="control-label" for="timeExpires">Expires on:</label>
-                <input class="form-control" id="timeExpires" name="timeExpires" type="date" value="2023-01-01" min="2022-12-01" max="2024-12-31" th:disabled="${!postExpires}">
+                <label class="control-label" for="expireDate">Expires on:</label>
+                <input class="form-control expireDateSelect" id="expireDate" name="expireDate" type="date" pattern="yyyy-MM-dd" value="2023-01-01" min="2022-12-01" max="2024-12-31" th:disabled="${!postExpires}">
+                <input type="hidden" id="expireDateDefault" name="expireDate" th:value="2021-01-01" th:disabled="${postExpires}">
             </div>
             <button type="submit" class="btn btn-primary" th:text="@{${action}+' Post'}">Submit</button>
         </form>

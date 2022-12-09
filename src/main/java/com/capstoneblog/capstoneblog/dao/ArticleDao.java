@@ -10,7 +10,7 @@ public interface ArticleDao {
     Article getArticleByID(int ID);
     List<Article> getAllArticles();
     Article addArticle(Article article);
-    void updateArticle(Article article);
+    int updateArticle(Article article);
     void deleteArticleByID(int ID);
     List<Tag> getTagsForArticle(Article article);
 
