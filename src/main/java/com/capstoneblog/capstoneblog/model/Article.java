@@ -102,7 +102,8 @@ public class Article {
                 && Objects.equals(getArticleContent(), article.getArticleContent())
                 && Objects.equals(getTimeCreated(), article.getTimeCreated())
                 && Objects.equals(getTimeUpdated(), article.getTimeUpdated())
-                && Objects.equals(getTimeExpires(), article.getTimeExpires());
+                && Objects.equals(getTimeExpires(), article.getTimeExpires())
+                && getTagsOnArticle().containsAll(article.getTagsOnArticle());
     }
 
     @Override
