@@ -49,6 +49,11 @@
                         <label class="custom-control-label" th:for="@{'Tag'+${tag.tagID}}" th:text="${tag.tagName}"></label>
                     </div>
                 </div>
+                <div class="custom-control custom-checkbox">
+                    <!-- <input type="checkbox" class="custom-control-input" id="newTag"> -->
+                    <label class="custom-control-label" for="newTag" text="newTag"></label>
+                <input type="text" class="custom-control custom-control-sm" id="newTag" placeholder="Add a new tag">
+            </div>
             </fieldset>
             <button type="submit" class="btn btn-primary" th:text="@{${action}+' Post'}">Submit</button>
         </form>
