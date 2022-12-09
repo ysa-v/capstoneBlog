@@ -28,7 +28,7 @@ public class IndexController
         // model.addAttribute("postsummary", "Sample summary");
         // model.addAttribute("postdate", "Nov 20, 2022");
 
-        List<Article> allPosts = articleDao.getAllArticles();
+        List<Article> allPosts = getVisibleArticles(articleDao.getAllArticles());
 
         List<Article> posts = new ArrayList<Article>();
 
@@ -44,5 +44,19 @@ public class IndexController
         model.addAttribute("posts", posts);
 
         return "index";
+    }
+
+    private List<Article> getVisibleArticles(List<Article> allArticles)
+    {
+        List<Article> visibleArticles = new ArrayList<>();
+
+        for (Article article : allArticles)
+        {
+            if (article.getArticleDisplay() == 1)
+            {
+                visibleArticles.add(article);
+            }
+        }
+        return visibleArticles;
     }
 }

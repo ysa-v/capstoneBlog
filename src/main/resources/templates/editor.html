@@ -18,6 +18,8 @@
 
         <form action="#" th:action="@{/Post/update}" method="post" th:object="${post}">
             <input type="hidden" id="articleID" name="articleID" th:value="${post.articleID}">
+            <input type="hidden" sec:authorize="hasRole('WRITER')" id="needsApproval" name="needsApproval" th:value="true">
+            <input type="hidden" sec:authorize="hasRole('ADMIN')" id="needsApproval" name="needsApproval" th:value="false">
             <div class="form-group">
                 <label for="articleTitle">Title</label>
                 <input type="text" class="form-control" name="articleTitle" id="articleTitle" placeholder="Title" th:value="${post.articleTitle}">

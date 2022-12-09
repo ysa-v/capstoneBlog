@@ -26,11 +26,21 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/Post/Tags">View All Tags</a>
                             </li>
-                            <li class="nav-item">
+                            <li sec:authorize="isAnonymous()" class="nav-item">
+                                <a btn btn-primary class="nav-link" href="/login">Sign In</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()" class="nav-item">
                                 <a class="nav-link" href="/Post/New">New Post</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Dashboard</a>
+                            <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                                <a class="nav-link" href="/Dashboard">Dashboard</a>
+                            </li>
+                            <li sec:authorize="isAuthenticated()" class="nav-item">
+                                <p th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]</p>
+                                <form th:action="@{/logout}" method="post">
+                                  <input class="btn btn-outline-primary" type="submit" value="Sign Out" />
+                                </form>
+                                <!-- <a class="nav-link" th:href="@{/logout}">Sign Out</a> -->
                             </li>
                         </ul>
                     </div>
