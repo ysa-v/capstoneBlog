@@ -166,7 +166,7 @@ public class PostController
             {
                 if (sortedTags.get(i).getArticlesWithTag().size() > articleCount)
                 {
-                    sortedTags.add(tag);
+                    sortedTags.add(i, tag);
                     break;
                 }
             }
@@ -193,7 +193,7 @@ public class PostController
                 int comparedTagNames = sortedTags.get(i).getTagName().compareToIgnoreCase(tagName);
                 if (comparedTagNames < 0)
                 {
-                    sortedTags.add(tag);
+                    sortedTags.add(i, tag);
                     break;
                 }
                 else if (comparedTagNames == 0)
