@@ -1,9 +1,11 @@
 package com.capstoneblog.capstoneblog.controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/*********LOGINS*********
+/*********************
+ * LOGINS
  * 
  * Username: Admin
  * Password: password
@@ -11,19 +13,20 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Username: Writer
  * Password: password
  * 
- * **********************/
+ **********************/
 
 @Controller
-public class AuthController {
+public class AuthController
+{
     @GetMapping("/login")
-    public String logIn()
+    public String logIn(Model model)
     {
         return "login";
     }
-    
-    //@GetMapping("/logout")
-    //public String logout()
-    //{
-    //    //
-    //}
+
+    // @GetMapping("/logout")
+    // public String logout()
+    // {
+    // //
+    // }
 }

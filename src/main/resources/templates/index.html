@@ -27,8 +27,11 @@
       <a href="/login">Sign In</a>
     </div>
 
-    <a href="Post/New">New post</a> <br>
-    <a href="Post/Edit">Edit post</a>
+    <br>
+    <a href="Post/Tags">View by tag</a><br>
+    <br>
+    <!-- <a href="Post/New">New post</a> <br> -->
+    <!-- <a href="Post/Edit">Edit post</a> -->
     
     <div th:each="post:${posts}">
         <div th:replace="~{fragments/post-preview::post-preview}"></div>
