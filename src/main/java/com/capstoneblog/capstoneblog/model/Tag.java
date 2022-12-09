@@ -50,8 +50,7 @@ public class Tag {
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
         return getTagID() == tag.getTagID()
-                && getTagName().equals(tag.getTagName())
-                && getArticlesWithTag().containsAll(tag.getArticlesWithTag());
+                && getTagName().equals(tag.getTagName());
     }
 
     @Override
