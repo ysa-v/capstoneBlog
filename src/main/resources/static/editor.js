@@ -17,8 +17,8 @@ $(document).on('focusin', function (e) {
     }
 });
 
-var dateSelect = document.getElementsByClassName("expireDateSelect")[0];
-var dateDefault = document.getElementsByClassName("expireDateDefault")[0];
+var dateSelect = document.getElementById("expireDate");
+var dateDefault = document.getElementById("expireDateDefault");
 
 function disableDateSelect() {
     dateDefault.disabled = false;
