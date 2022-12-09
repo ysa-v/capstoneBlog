@@ -41,6 +41,15 @@
                 <input class="form-control expireDateSelect" id="expireDate" name="expireDate" type="date" pattern="yyyy-MM-dd" value="2023-01-01" min="2022-12-01" max="2024-12-31" th:disabled="${!postExpires}">
                 <input type="hidden" id="expireDateDefault" name="expireDate" th:value="2021-01-01" th:disabled="${postExpires}">
             </div>
+            <fieldset class="form-group" id="tags">
+                <legend class="form-label">Select Tags</legend>
+                <div th:each="tag:${tagList}">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" name="tagID" th:value="${tag.tagID}" th:id="@{'Tag'+${tag.tagID}}">
+                        <label class="custom-control-label" th:for="@{'Tag'+${tag.tagID}}" th:text="${tag.tagName}"></label>
+                    </div>
+                </div>
+            </fieldset>
             <button type="submit" class="btn btn-primary" th:text="@{${action}+' Post'}">Submit</button>
         </form>
 
