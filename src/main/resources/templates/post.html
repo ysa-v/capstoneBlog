@@ -15,11 +15,15 @@
   <body>
     <div th:replace="~{fragments/header::header}"></div>
 
-    <div sec:authorize="isAuthenticated()">
-      <h3 th:if="@{${post.articleDisplay}!=1}">This post is hidden and currently awaiting approval.</h3>
-      
+    <div class="bg-info" sec:authorize="isAuthenticated()">
+      <p th:if="@{${post.articleDisplay}!=1}">This post is hidden and currently awaiting approval.</p>
+      <form th:if="@{${post.articleDisplay}==0}" sec:authorize="hasRole('ADMIN')" th:action="@{/approve}" method="post">
+        <input type="hidden" id="articleID" name="articleID" th:value="${post.articleID}">
+        <input class="btn btn-success btn-sm btn-block" type="submit" value="Approve" />
+      </form>
+
       <div sec:authorize="isAuthenticated()">
-        <a class="btn btn-outline-primary btn-sm btn-block" th:href="@{'/Post/Edit/'+${post.articleID}}">Edit/Delete</a>
+        <a class="btn btn-primary btn-sm btn-block" th:href="@{'/Post/Edit/'+${post.articleID}}">Edit/Delete</a>
       </div>
     </div>
 
