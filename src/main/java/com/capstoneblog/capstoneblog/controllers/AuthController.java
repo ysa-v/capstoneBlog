@@ -1,12 +1,17 @@
 package com.capstoneblog.capstoneblog.controllers;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.capstoneblog.capstoneblog.dao.ArticleDaoDB;
 import com.capstoneblog.capstoneblog.model.Article;
@@ -54,5 +59,24 @@ public class AuthController
             }
         }
         return articles;
+    }
+
+    @PostMapping("/approve")
+    private ResponseEntity approvePost(@RequestParam int articleID)
+    {
+        try
+        {
+            Article article = articleDaoDB.getArticleByID(articleID);
+
+            article.setArticleDisplay(1);
+
+            articleDaoDB.updateArticle(article);
+
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/Post/" + articleID)).build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
